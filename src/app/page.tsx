@@ -48,20 +48,20 @@ export default function Home() {
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="flex-1 flex flex-col items-center lg:items-start text-center lg:text-left z-10"
           >
-            <h2 className="text-redbull-red font-black text-xl md:text-3xl mb-4 tracking-[0.2em] uppercase skew-x-[-10deg]">
-              YILDIZ TEKNİK ÜNİVERSİTESİ
-            </h2>
-
             <div className="relative w-full flex justify-center lg:justify-start">
               <div className="mb-8 pl-0 lg:pl-0">
                 <img
-                  src="/3asagi5yukari.png"
+                  src="/3asagi5yukariyeni.svg"
                   alt="Star Rush"
                   className="w-[80vw] lg:w-[600px] h-auto object-contain drop-shadow-sm"
                 />
               </div>
               <div className="absolute -top-10 -right-10 w-24 h-24 bg-redbull-yellow rounded-full blur-2xl opacity-50 animate-pulse hidden lg:block"></div>
             </div>
+
+            <h2 className="text-redbull-red font-black text-xl md:text-3xl mb-4 tracking-[0.2em] uppercase skew-x-[-10deg]">
+              YILDIZ TEKNİK ÜNİVERSİTESİ
+            </h2>
 
             <p className="text-xl md:text-3xl text-redbull-silver font-bold max-w-2xl italic tracking-wide mb-8">
               HIZINI KEŞFET, SINIRLARI ZORLA, <br /> <span className="text-redbull-navy">LİDERLİĞE OYNA.</span>
