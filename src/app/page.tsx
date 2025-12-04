@@ -56,7 +56,7 @@ export default function Home() {
                   className="w-[80vw] lg:w-[600px] h-auto object-contain drop-shadow-sm"
                 />
               </div>
-              <div className="absolute -top-10 -right-10 w-24 h-24 bg-redbull-yellow rounded-full blur-2xl opacity-50 animate-pulse hidden lg:block"></div>
+
             </div>
 
             <h2 className="text-redbull-red font-black text-xl md:text-3xl mb-4 tracking-[0.2em] uppercase skew-x-[-10deg]">
