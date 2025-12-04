@@ -2,7 +2,7 @@
 
 import { useRacers } from "@/hooks/useRacers";
 import { useSocket } from "@/providers/SocketProvider";
-import { Trash2, AlertTriangle, LogOut } from "lucide-react";
+import { Trash2, LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 export default function SuperAdminDashboard() {
@@ -16,94 +16,125 @@ export default function SuperAdminDashboard() {
         }
     };
 
-
-
     const handleLogout = async () => {
         await fetch('/api/auth/logout', { method: 'POST' });
         router.push('/admin/login');
     };
 
     return (
-        <div className="min-h-screen bg-redbull-navy text-white p-8 font-sans">
-            <div className="flex justify-between items-center mb-8">
-                <h1 className="text-3xl font-bold text-redbull-yellow">Süper Admin Paneli</h1>
-                <div className="flex gap-4">
-                    <button
-                        onClick={() => router.push('/admin/start')}
-                        className="px-4 py-2 bg-blue-600 rounded hover:bg-blue-700 transition"
-                    >
-                        Başlangıç Noktasına Git
-                    </button>
-                    <button
-                        onClick={() => router.push('/admin/finish')}
-                        className="px-4 py-2 bg-green-600 rounded hover:bg-green-700 transition"
-                    >
-                        Bitiş Noktasına Git
-                    </button>
-                    <button
-                        onClick={handleLogout}
-                        className="flex items-center gap-2 px-4 py-2 bg-red-600 rounded hover:bg-red-700 transition"
-                    >
-                        <LogOut size={18} /> Çıkış Yap
-                    </button>
-                </div>
+        <div className="min-h-screen bg-redbull-navy text-white p-8 font-sans relative overflow-hidden">
+            {/* Dynamic Background */}
+            <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+                <div className="absolute top-[-20%] right-[-10%] w-[600px] h-[600px] bg-redbull-red/20 rounded-full blur-[100px]" />
+                <div className="absolute bottom-[-20%] left-[-10%] w-[500px] h-[500px] bg-redbull-yellow/10 rounded-full blur-[100px]" />
+                <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
             </div>
 
-            <div className="bg-white text-redbull-navy rounded-xl shadow-lg overflow-hidden">
-                <div className="p-6 border-b border-gray-100 flex justify-between items-center">
-                    <h2 className="text-xl font-bold">Tüm Yarışçılar ({racers.length})</h2>
+            <div className="relative z-10 max-w-7xl mx-auto">
+                <div className="flex justify-between items-center mb-12">
+                    <div>
+                        <div className="flex items-center gap-6 mb-4">
+                            <img
+                                src="/redbull.svg"
+                                alt="Red Bull"
+                                className="h-10"
+                            />
+                            <div className="h-8 w-[1px] bg-white/30"></div>
+                            <img
+                                src="/weblab.svg"
+                                alt="WebLab"
+                                className="h-8 w-auto"
+                            />
+                        </div>
+                        <h1 className="text-4xl font-black italic tracking-tighter text-white mb-2">SÜPER ADMIN PANELİ</h1>
+                        <p className="text-redbull-silver">Tüm yarışçıları yönetin ve sistem durumunu kontrol edin.</p>
+                    </div>
+                    <div className="flex gap-4">
+                        <button
+                            onClick={() => router.push('/admin/start')}
+                            className="px-6 py-3 bg-blue-600/20 border border-blue-500/50 text-blue-400 rounded-lg font-bold hover:bg-blue-600 hover:text-white transition-all uppercase tracking-wider text-sm backdrop-blur-sm"
+                        >
+                            Başlangıç Noktası
+                        </button>
+                        <button
+                            onClick={() => router.push('/admin/finish')}
+                            className="px-6 py-3 bg-green-600/20 border border-green-500/50 text-green-400 rounded-lg font-bold hover:bg-green-600 hover:text-white transition-all uppercase tracking-wider text-sm backdrop-blur-sm"
+                        >
+                            Bitiş Noktası
+                        </button>
+                        <button
+                            onClick={handleLogout}
+                            className="flex items-center gap-2 px-6 py-3 bg-red-600 text-white rounded-lg font-bold hover:bg-red-700 transition-all uppercase tracking-wider text-sm shadow-lg shadow-red-900/20"
+                        >
+                            <LogOut size={18} /> Çıkış
+                        </button>
+                    </div>
                 </div>
-                <div className="overflow-x-auto">
-                    <table className="w-full text-left">
-                        <thead className="bg-gray-50 text-gray-500 uppercase text-xs">
-                            <tr>
-                                <th className="p-4">İsim</th>
-                                <th className="p-4">Email</th>
-                                <th className="p-4">Telefon</th>
-                                <th className="p-4">Kategori</th>
-                                <th className="p-4">Durum</th>
-                                <th className="p-4">Süre</th>
-                                <th className="p-4 text-right">İşlemler</th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-gray-100">
-                            {racers.map(racer => (
-                                <tr key={racer.id} className="hover:bg-gray-50 transition">
-                                    <td className="p-4 font-bold">{racer.name}</td>
-                                    <td className="p-4 text-sm text-gray-600">{racer.email}</td>
-                                    <td className="p-4 text-sm text-gray-600">{racer.phone}</td>
-                                    <td className="p-4">{racer.category === 'Men' ? 'Erkek' : racer.category === 'Women' ? 'Kadın' : racer.category}</td>
-                                    <td className="p-4">
-                                        <span className={`px-2 py-1 rounded text-xs font-bold uppercase ${racer.status === 'finished' ? 'bg-green-100 text-green-700' :
-                                            racer.status === 'running' ? 'bg-blue-100 text-blue-700' :
-                                                'bg-gray-100 text-gray-700'
-                                            }`}>
-                                            {racer.status === 'finished' ? 'Tamamladı' :
-                                                racer.status === 'running' ? 'Koşuyor' :
-                                                    'Kayıtlı'}
-                                        </span>
-                                    </td>
-                                    <td className="p-4 font-mono">
-                                        {racer.duration ? (racer.duration / 1000).toFixed(2) + 's' : '-'}
-                                    </td>
-                                    <td className="p-4 text-right">
-                                        <button
-                                            onClick={() => handleDelete(racer.id, racer.name)}
-                                            className="text-red-500 hover:bg-red-50 p-2 rounded transition"
-                                            title="Yarışçıyı Sil"
-                                        >
-                                            <Trash2 size={20} />
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
-                            {racers.length === 0 && (
+
+                <div className="bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 shadow-2xl overflow-hidden">
+                    <div className="p-6 border-b border-white/10 flex justify-between items-center bg-white/5">
+                        <h2 className="text-xl font-bold flex items-center gap-2">
+                            <span className="w-2 h-8 bg-redbull-yellow rounded-full"></span>
+                            Tüm Yarışçılar <span className="text-redbull-silver text-sm ml-2">({racers.length})</span>
+                        </h2>
+                    </div>
+                    <div className="overflow-x-auto">
+                        <table className="w-full text-left">
+                            <thead className="bg-black/20 text-redbull-silver uppercase text-xs font-bold tracking-wider">
                                 <tr>
-                                    <td colSpan={7} className="p-8 text-center text-gray-400">Veritabanı boş.</td>
+                                    <th className="p-6">İsim</th>
+                                    <th className="p-6">Email</th>
+                                    <th className="p-6">Telefon</th>
+                                    <th className="p-6">Kategori</th>
+                                    <th className="p-6">Durum</th>
+                                    <th className="p-6">Süre</th>
+                                    <th className="p-6 text-right">İşlemler</th>
                                 </tr>
-                            )}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody className="divide-y divide-white/5">
+                                {racers.map(racer => (
+                                    <tr key={racer.id} className="hover:bg-white/5 transition-colors group">
+                                        <td className="p-6 font-bold text-lg group-hover:text-redbull-yellow transition-colors">{racer.name}</td>
+                                        <td className="p-6 text-sm text-redbull-silver">{racer.email}</td>
+                                        <td className="p-6 text-sm text-redbull-silver">{racer.phone}</td>
+                                        <td className="p-6">
+                                            <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border ${racer.category === 'Men' ? 'bg-blue-500/10 border-blue-500/20 text-blue-400' : 'bg-pink-500/10 border-pink-500/20 text-pink-400'
+                                                }`}>
+                                                {racer.category === 'Men' ? 'Erkek' : racer.category === 'Women' ? 'Kadın' : racer.category}
+                                            </span>
+                                        </td>
+                                        <td className="p-6">
+                                            <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border ${racer.status === 'finished' ? 'bg-green-500/10 border-green-500/20 text-green-400' :
+                                                racer.status === 'running' ? 'bg-blue-500/10 border-blue-500/20 text-blue-400 animate-pulse' :
+                                                    'bg-gray-500/10 border-gray-500/20 text-gray-400'
+                                                }`}>
+                                                {racer.status === 'finished' ? 'Tamamladı' :
+                                                    racer.status === 'running' ? 'Koşuyor' :
+                                                        'Kayıtlı'}
+                                            </span>
+                                        </td>
+                                        <td className="p-6 font-mono font-bold text-redbull-red">
+                                            {racer.duration ? (racer.duration / 1000).toFixed(2) + 's' : '-'}
+                                        </td>
+                                        <td className="p-6 text-right">
+                                            <button
+                                                onClick={() => handleDelete(racer.id, racer.name)}
+                                                className="text-red-500 hover:bg-red-500/20 p-2 rounded-lg transition-all"
+                                                title="Yarışçıyı Sil"
+                                            >
+                                                <Trash2 size={20} />
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                                {racers.length === 0 && (
+                                    <tr>
+                                        <td colSpan={7} className="p-12 text-center text-redbull-silver italic">Veritabanı boş.</td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

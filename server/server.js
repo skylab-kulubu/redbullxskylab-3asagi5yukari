@@ -105,6 +105,12 @@ async function initServer() {
     const racers = await getRacers();
     socket.emit('init_data', racers);
 
+    // Allow client to request data manually
+    socket.on('request_data', async () => {
+      const currentRacers = await getRacers();
+      socket.emit('init_data', currentRacers);
+    });
+
     // Register new racer
     socket.on('register_racer', async (racer) => {
       const id = crypto.randomUUID();

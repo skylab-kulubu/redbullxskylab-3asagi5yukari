@@ -28,6 +28,9 @@ export const useRacers = () => {
             setRacers(data);
         });
 
+        // Request data immediately to ensure we have the latest state
+        socket.emit('request_data');
+
         return () => {
             socket.off("init_data");
             socket.off("racers_list");
