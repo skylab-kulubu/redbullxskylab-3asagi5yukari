@@ -12,6 +12,15 @@ export default function Footer() {
                 />
             </div>
 
+            {/* SkyLab Logo */}
+            <div className="opacity-90 hover:opacity-100 transition-opacity">
+                <img
+                    src="/skylab.png"
+                    alt="SkyLab"
+                    className="h-10 md:h-14 object-contain"
+                />
+            </div>
+
             {/* WebLab Logo */}
             <div className="opacity-90 hover:opacity-100 transition-opacity">
                 <img
@@ -19,15 +28,6 @@ export default function Footer() {
                     alt="WebLab"
                     className="h-10 md:h-14 object-contain"
                     style={{ filter: 'brightness(0) invert(1)' }}
-                />
-            </div>
-
-            {/* SkyLab Logo */}
-            <div className="opacity-90 hover:opacity-100 transition-opacity">
-                <img
-                    src="/skylab.png"
-                    alt="SkyLab"
-                    className="h-10 md:h-14 object-contain"
                 />
             </div>
 

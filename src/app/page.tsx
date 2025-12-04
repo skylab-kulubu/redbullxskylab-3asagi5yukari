@@ -52,7 +52,7 @@ export default function Home() {
               <div className="mb-8 pl-0 lg:pl-0">
                 <img
                   src="/3asagi5yukariyeni.svg"
-                  alt="Star Rush"
+                  alt="Red Bull Running Event"
                   className="w-[80vw] lg:w-[600px] h-auto object-contain drop-shadow-sm"
                 />
               </div>
@@ -220,7 +220,7 @@ export default function Home() {
               transition={{ delay: 0.2 }}
               className="text-xl md:text-2xl text-redbull-silver font-bold max-w-4xl mx-auto leading-relaxed"
             >
-              Star Rush, sıradan bir koşu değil. Bu, kampüsün damarlarında akan bir adrenalin patlaması.
+              Bu etkinlik sıradan bir koşu değil. Bu, kampüsün damarlarında akan bir adrenalin patlaması.
               Stratejini kur, rotanı belirle ve <span className="text-redbull-red">en hızlı</span> sen ol.
               Sadece bacaklarına değil, zekana da güvenmelisin.
             </motion.p>
@@ -401,8 +401,8 @@ export default function Home() {
             <div className="space-y-4">
               {[
                 { q: "Yarışa kimler katılabilir?", a: "Yıldız Teknik Üniversitesi öğrencisi olan herkes yarışa katılabilir. Öğrenci kimliğinizi yanınızda bulundurmanız yeterlidir." },
-                { q: "Takım olarak katılabilir miyiz?", a: "Star Rush bireysel bir zamana karşı yarışıdır. Arkadaşlarınla gelebilirsin ama her yarışçı kendi süresiyle yarışır." },
-                { q: "Kayıt ücretli mi?", a: "Hayır, Star Rush etkinliği tamamen ücretsizdir. Red Bull enerjisi de bizden!" },
+                { q: "Takım olarak katılabilir miyiz?", a: "Etkinliğimiz bireysel bir zamana karşı yarışıdır. Arkadaşlarınla gelebilirsin ama her yarışçı kendi süresiyle yarışır." },
+                { q: "Kayıt ücretli mi?", a: "Hayır, Etkinliğimiz tamamen ücretsizdir. Red Bull enerjisi de bizden!" },
                 { q: "Ne giymeliyim?", a: "Rahat spor kıyafetleri ve koşu ayakkabısı önerilir. Kampüs içinde bolca hareket edeceksiniz." }
               ].map((item, i) => (
                 <motion.div
@@ -431,7 +431,7 @@ export default function Home() {
               26 Aralık'ta Davutpaşa Kampüsü'nde yer yerinden oynayacak. Enerjini topla, stratejini kur.
             </p>
             <Link
-              href="https://www.google.com/calendar/render?action=TEMPLATE&text=Red+Bull+Star+Rush&dates=20251226T060000Z/20251226T170000Z&details=Yıldız+Teknik+Üniversitesi+Davutpaşa+Kampüsü'nde+hızını+göster!&location=Yıldız+Teknik+Üniversitesi+Davutpaşa+Kampüsü&sf=true&output=xml"
+              href="https://www.google.com/calendar/render?action=TEMPLATE&text=Red+Bull+Running+Event&dates=20251226T060000Z/20251226T170000Z&details=Yıldız+Teknik+Üniversitesi+Davutpaşa+Kampüsü'nde+hızını+göster!&location=Yıldız+Teknik+Üniversitesi+Davutpaşa+Kampüsü&sf=true&output=xml"
               target="_blank"
               className="px-12 py-6 bg-white text-redbull-red font-black text-2xl rounded-lg shadow-2xl hover:bg-redbull-navy hover:text-white transition-colors duration-300 ease-in-out transform skew-x-[-10deg] inline-block mt-12"
             >

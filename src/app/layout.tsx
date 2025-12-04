@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Red Bull Star Rush",
-  description: "Yıldız Technical University Racing Event",
+  title: "Red Bull Running Event",
+  description: "Yıldız Technical University Running Event",
 };
 
 export default function RootLayout({
