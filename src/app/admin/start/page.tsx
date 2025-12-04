@@ -15,11 +15,50 @@ export default function AdminStart() {
     const [formData, setFormData] = useState({ name: "", email: "", phone: "", category: "Men" });
     const [editingId, setEditingId] = useState<string | null>(null);
     const [editData, setEditData] = useState({ name: "", email: "", phone: "", category: "" });
+    const [popup, setPopup] = useState<{ isOpen: boolean; message: string; type: 'alert' | 'confirm'; onConfirm?: () => void }>({
+        isOpen: false,
+        message: '',
+        type: 'alert'
+    });
+
+    const formatPhoneNumber = (value: string) => {
+        const phoneNumber = value.replace(/\D/g, '');
+        const trimmed = phoneNumber.slice(0, 10);
+        if (trimmed.length < 4) return trimmed;
+        if (trimmed.length < 7) return `${trimmed.slice(0, 3)} ${trimmed.slice(3)}`;
+        if (trimmed.length < 9) return `${trimmed.slice(0, 3)} ${trimmed.slice(3, 6)} ${trimmed.slice(6)}`;
+        return `${trimmed.slice(0, 3)} ${trimmed.slice(3, 6)} ${trimmed.slice(6, 8)} ${trimmed.slice(8)}`;
+    };
 
     const handleRegister = (e: React.FormEvent) => {
         e.preventDefault();
+
+        const rawPhone = formData.phone.replace(/\D/g, '');
+        if (rawPhone.length !== 10) {
+            setPopup({ isOpen: true, message: "Lütfen telefon numarasını eksiksiz giriniz (10 hane).", type: 'alert' });
+            return;
+        }
+
         if (socket && formData.name && formData.email) {
-            socket.emit("register_racer", formData);
+            let finalPhone = formData.phone.replace(/\s/g, '');
+            // Auto-format phone
+            if (!finalPhone.startsWith('+')) {
+                if (finalPhone.startsWith('90')) {
+                    finalPhone = '+' + finalPhone;
+                } else if (finalPhone.startsWith('0')) {
+                    finalPhone = '+90' + finalPhone.substring(1);
+                } else {
+                    finalPhone = '+90' + finalPhone;
+                }
+            }
+
+            // Auto-append email domain
+            let finalEmail = formData.email;
+            if (!finalEmail.includes('@')) {
+                finalEmail += '@std.yildiz.edu.tr';
+            }
+
+            socket.emit("register_racer", { ...formData, phone: finalPhone, email: finalEmail });
             setFormData({ name: "", email: "", phone: "", category: "Men" });
         }
     };
@@ -31,9 +70,14 @@ export default function AdminStart() {
     };
 
     const handleResetStart = (id: string) => {
-        if (confirm("Başlangıç zamanını sıfırlamak istediğinize emin misiniz? Bu işlem yarışçıyı kayıtlı durumuna geri döndürür.") && socket) {
-            socket.emit("reset_start", id);
-        }
+        setPopup({
+            isOpen: true,
+            message: "Başlangıç zamanını sıfırlamak istediğinize emin misiniz? Bu işlem yarışçıyı kayıtlı durumuna geri döndürür.",
+            type: 'confirm',
+            onConfirm: () => {
+                if (socket) socket.emit("reset_start", id);
+            }
+        });
     };
 
     const startEditing = (racer: Racer) => {
@@ -58,8 +102,10 @@ export default function AdminStart() {
     };
 
     // Filter racers: Registered (waiting to start) and Running (can be reset)
+    // Filter racers: Registered (waiting to start) and Running (can be reset)
     const registeredRacers = racers.filter(r => r.status === 'registered');
     const runningRacers = racers.filter(r => r.status === 'running');
+    const displayRacers = [...registeredRacers, ...runningRacers];
 
     return (
         <div className="min-h-screen bg-redbull-navy text-white p-8 font-sans relative overflow-hidden">
@@ -71,9 +117,9 @@ export default function AdminStart() {
             </div>
 
             <div className="relative z-10 max-w-7xl mx-auto">
-                <div className="flex justify-between items-center mb-8">
-                    <div>
-                        <div className="flex items-center gap-6 mb-4">
+                <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-8 md:gap-0">
+                    <div className="text-center md:text-left">
+                        <div className="flex items-center justify-center md:justify-start gap-6 mb-4">
                             <img
                                 src="/redbull.svg"
                                 alt="Red Bull"
@@ -88,7 +134,7 @@ export default function AdminStart() {
                         </div>
                         <h1 className="text-3xl font-black italic tracking-tighter text-white">BAŞLANGIÇ NOKTASI</h1>
                     </div>
-                    <div className="flex items-center gap-4">
+                    <div className="flex flex-col md:flex-row items-center gap-4">
                         <div className="text-sm text-redbull-silver font-bold uppercase tracking-wider">
                             Toplam Kayıt: <span className="text-white text-lg ml-1">{racers.length}</span>
                         </div>
@@ -126,22 +172,28 @@ export default function AdminStart() {
                                 <div>
                                     <label className="block text-xs font-bold text-redbull-silver uppercase tracking-wider mb-1">Email</label>
                                     <input
-                                        type="email"
+                                        type="text"
                                         value={formData.email}
                                         onChange={e => setFormData({ ...formData, email: e.target.value })}
                                         className="w-full bg-black/20 border border-white/10 rounded p-3 text-white focus:outline-none focus:border-redbull-yellow transition-colors placeholder-white/20"
-                                        placeholder="ornek@email.com"
+                                        placeholder="ogrenci.no"
                                         required
                                     />
+                                    {!formData.email.includes('@') && formData.email.length > 0 && (
+                                        <div className="text-xs text-redbull-yellow mt-1 font-mono opacity-80">
+                                            {formData.email}@std.yildiz.edu.tr
+                                        </div>
+                                    )}
                                 </div>
                                 <div>
                                     <label className="block text-xs font-bold text-redbull-silver uppercase tracking-wider mb-1">Telefon</label>
                                     <input
                                         type="tel"
+                                        maxLength={13}
                                         value={formData.phone}
-                                        onChange={e => setFormData({ ...formData, phone: e.target.value })}
+                                        onChange={e => setFormData({ ...formData, phone: formatPhoneNumber(e.target.value) })}
                                         className="w-full bg-black/20 border border-white/10 rounded p-3 text-white focus:outline-none focus:border-redbull-yellow transition-colors placeholder-white/20"
-                                        placeholder="555 123 45 67"
+                                        placeholder="505 005 05 05"
                                         required
                                     />
                                 </div>
@@ -183,13 +235,18 @@ export default function AdminStart() {
                         </h2>
 
                         <div className="overflow-y-auto flex-1 pr-2 space-y-3 custom-scrollbar">
-                            {registeredRacers.length === 0 ? (
+                            {displayRacers.length === 0 ? (
                                 <div className="text-center text-redbull-silver py-12 italic">
                                     Henüz kayıtlı yarışçı yok.
                                 </div>
                             ) : (
-                                registeredRacers.map(racer => (
-                                    <div key={racer.id} className="bg-white/5 p-4 rounded-lg border border-white/10 flex justify-between items-center group hover:bg-white/10 transition-all hover:border-white/20">
+                                displayRacers.map(racer => (
+                                    <div key={racer.id} className={cn(
+                                        "p-4 rounded-lg border flex justify-between items-center group transition-all",
+                                        racer.status === 'running'
+                                            ? "bg-redbull-red/10 border-redbull-red/30 hover:bg-redbull-red/20"
+                                            : "bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20"
+                                    )}>
                                         {editingId === racer.id ? (
                                             <div className="flex-1 grid grid-cols-2 gap-2 mr-4">
                                                 <input
@@ -206,7 +263,8 @@ export default function AdminStart() {
                                                 />
                                                 <input
                                                     value={editData.phone}
-                                                    onChange={e => setEditData({ ...editData, phone: e.target.value })}
+                                                    maxLength={13}
+                                                    onChange={e => setEditData({ ...editData, phone: formatPhoneNumber(e.target.value) })}
                                                     className="bg-black/40 p-2 rounded text-sm text-white border border-white/20"
                                                     placeholder="Telefon"
                                                 />
@@ -242,15 +300,32 @@ export default function AdminStart() {
                                                 </>
                                             ) : (
                                                 <>
-                                                    <button onClick={() => startEditing(racer)} className="p-2 text-redbull-silver hover:text-white transition-colors">
-                                                        <Edit2 size={18} />
-                                                    </button>
-                                                    <button
-                                                        onClick={() => handleStart(racer.id)}
-                                                        className="bg-redbull-yellow text-redbull-navy px-4 py-2 rounded font-black text-sm hover:bg-white transition-colors flex items-center gap-2 shadow-lg shadow-yellow-500/20"
-                                                    >
-                                                        <Play size={16} fill="currentColor" /> BAŞLAT
-                                                    </button>
+                                                    {racer.status === 'running' ? (
+                                                        <div className="flex items-center gap-4">
+                                                            <div className="text-redbull-red font-mono font-bold animate-pulse tracking-widest text-xs hidden md:block">
+                                                                YARIŞIYOR
+                                                            </div>
+                                                            <button
+                                                                onClick={() => handleResetStart(racer.id)}
+                                                                className="p-2 bg-redbull-red/20 text-redbull-red rounded hover:bg-redbull-red hover:text-white transition"
+                                                                title="Sıfırla"
+                                                            >
+                                                                <RotateCcw size={16} />
+                                                            </button>
+                                                        </div>
+                                                    ) : (
+                                                        <>
+                                                            <button onClick={() => startEditing(racer)} className="p-2 text-redbull-silver hover:text-white transition-colors">
+                                                                <Edit2 size={18} />
+                                                            </button>
+                                                            <button
+                                                                onClick={() => handleStart(racer.id)}
+                                                                className="bg-redbull-yellow text-redbull-navy px-4 py-2 rounded font-black text-sm hover:bg-white transition-colors flex items-center gap-2 shadow-lg shadow-yellow-500/20"
+                                                            >
+                                                                <Play size={16} fill="currentColor" /> BAŞLAT
+                                                            </button>
+                                                        </>
+                                                    )}
                                                 </>
                                             )}
                                         </div>
@@ -261,38 +336,46 @@ export default function AdminStart() {
                     </div>
                 </div>
 
-                {/* Running Racers */}
-                {runningRacers.length > 0 && (
-                    <div className="mt-8 bg-redbull-red/10 backdrop-blur-md p-6 rounded-xl border border-redbull-red/30 shadow-[0_0_30px_rgba(219,10,64,0.1)]">
-                        <h2 className="text-xl font-black italic mb-4 text-redbull-red flex items-center gap-2">
-                            <Timer className="animate-pulse" />
-                            ŞU AN YARIŞANLAR
-                        </h2>
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                            {runningRacers.map(racer => (
-                                <div key={racer.id} className="bg-redbull-navy/80 p-4 rounded border border-redbull-red/30 flex justify-between items-center shadow-lg">
-                                    <div>
-                                        <div className="font-bold text-lg">{racer.name}</div>
-                                        <div className="text-xs font-bold text-redbull-silver uppercase tracking-wider">{racer.category === 'Men' ? 'Erkek' : 'Kadın'}</div>
-                                    </div>
-                                    <div className="flex items-center gap-4">
-                                        <div className="text-redbull-red font-mono font-bold animate-pulse tracking-widest">
-                                            YARIŞIYOR
-                                        </div>
+
+            </div>
+
+            {/* Custom Popup */}
+            {
+                popup.isOpen && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+                        <div className="bg-redbull-navy border border-white/20 p-8 rounded-2xl shadow-2xl max-w-md w-full text-center relative overflow-hidden">
+                            <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 pointer-events-none"></div>
+                            <div className="relative z-10">
+                                <h3 className="text-2xl font-black italic text-white mb-4">
+                                    {popup.type === 'alert' ? 'UYARI' : 'ONAY'}
+                                </h3>
+                                <p className="text-redbull-silver mb-8 font-medium">
+                                    {popup.message}
+                                </p>
+                                <div className="flex gap-4 justify-center">
+                                    {popup.type === 'confirm' && (
                                         <button
-                                            onClick={() => handleResetStart(racer.id)}
-                                            className="p-2 bg-redbull-red/20 text-redbull-red rounded hover:bg-redbull-red hover:text-white transition"
-                                            title="Sıfırla"
+                                            onClick={() => setPopup(prev => ({ ...prev, isOpen: false }))}
+                                            className="px-6 py-3 bg-white/10 text-white rounded-lg font-bold hover:bg-white/20 transition-colors uppercase tracking-wider"
                                         >
-                                            <RotateCcw size={16} />
+                                            İptal
                                         </button>
-                                    </div>
+                                    )}
+                                    <button
+                                        onClick={() => {
+                                            if (popup.onConfirm) popup.onConfirm();
+                                            setPopup(prev => ({ ...prev, isOpen: false }));
+                                        }}
+                                        className="px-6 py-3 bg-redbull-red text-white rounded-lg font-bold hover:bg-red-600 transition-colors uppercase tracking-wider shadow-lg shadow-red-900/20"
+                                    >
+                                        Tamam
+                                    </button>
                                 </div>
-                            ))}
+                            </div>
                         </div>
                     </div>
-                )}
-            </div>
-        </div>
+                )
+            }
+        </div >
     );
 }

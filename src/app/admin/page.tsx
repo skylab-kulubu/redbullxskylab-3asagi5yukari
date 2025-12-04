@@ -31,9 +31,9 @@ export default function SuperAdminDashboard() {
             </div>
 
             <div className="relative z-10 max-w-7xl mx-auto">
-                <div className="flex justify-between items-center mb-12">
-                    <div>
-                        <div className="flex items-center gap-6 mb-4">
+                <div className="flex flex-col md:flex-row justify-between items-center mb-12 gap-8 md:gap-0">
+                    <div className="text-center md:text-left">
+                        <div className="flex items-center justify-center md:justify-start gap-6 mb-4">
                             <img
                                 src="/redbull.svg"
                                 alt="Red Bull"
@@ -49,22 +49,22 @@ export default function SuperAdminDashboard() {
                         <h1 className="text-4xl font-black italic tracking-tighter text-white mb-2">SÜPER ADMIN PANELİ</h1>
                         <p className="text-redbull-silver">Tüm yarışçıları yönetin ve sistem durumunu kontrol edin.</p>
                     </div>
-                    <div className="flex gap-4">
+                    <div className="flex flex-wrap justify-center md:justify-end gap-4 w-full md:w-auto">
                         <button
                             onClick={() => router.push('/admin/start')}
-                            className="px-6 py-3 bg-blue-600/20 border border-blue-500/50 text-blue-400 rounded-lg font-bold hover:bg-blue-600 hover:text-white transition-all uppercase tracking-wider text-sm backdrop-blur-sm"
+                            className="flex-1 md:flex-none px-6 py-3 bg-blue-600/20 border border-blue-500/50 text-blue-400 rounded-lg font-bold hover:bg-blue-600 hover:text-white transition-all uppercase tracking-wider text-sm backdrop-blur-sm whitespace-nowrap"
                         >
                             Başlangıç Noktası
                         </button>
                         <button
                             onClick={() => router.push('/admin/finish')}
-                            className="px-6 py-3 bg-green-600/20 border border-green-500/50 text-green-400 rounded-lg font-bold hover:bg-green-600 hover:text-white transition-all uppercase tracking-wider text-sm backdrop-blur-sm"
+                            className="flex-1 md:flex-none px-6 py-3 bg-green-600/20 border border-green-500/50 text-green-400 rounded-lg font-bold hover:bg-green-600 hover:text-white transition-all uppercase tracking-wider text-sm backdrop-blur-sm whitespace-nowrap"
                         >
                             Bitiş Noktası
                         </button>
                         <button
                             onClick={handleLogout}
-                            className="flex items-center gap-2 px-6 py-3 bg-red-600 text-white rounded-lg font-bold hover:bg-red-700 transition-all uppercase tracking-wider text-sm shadow-lg shadow-red-900/20"
+                            className="flex-1 md:flex-none flex items-center justify-center gap-2 px-6 py-3 bg-red-600 text-white rounded-lg font-bold hover:bg-red-700 transition-all uppercase tracking-wider text-sm shadow-lg shadow-red-900/20 whitespace-nowrap"
                         >
                             <LogOut size={18} /> Çıkış
                         </button>

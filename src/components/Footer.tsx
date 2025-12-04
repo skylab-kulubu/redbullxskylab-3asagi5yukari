@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function Footer() {
     return (
-        <footer className="w-full py-12 px-8 flex flex-wrap justify-center items-center gap-8 md:gap-16 z-50 relative mt-auto bg-redbull-navy text-white">
+        <footer className="w-full py-12 px-8 grid grid-cols-2 md:flex md:flex-wrap justify-items-center justify-center items-center gap-8 md:gap-16 z-50 relative mt-auto bg-redbull-navy text-white">
             {/* Red Bull Logo */}
             <div className="opacity-90 hover:opacity-100 transition-opacity">
                 <img

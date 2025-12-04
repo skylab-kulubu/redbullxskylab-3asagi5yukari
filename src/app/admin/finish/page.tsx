@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { useSocket } from "@/providers/SocketProvider";
 import { useRacers } from "@/hooks/useRacers";
 import { formatDuration } from "@/lib/utils";
@@ -10,6 +11,19 @@ export default function AdminFinish() {
     const { socket } = useSocket();
     const { racers } = useRacers();
     const router = useRouter();
+
+    const LiveTimer = ({ startTime }: { startTime: number }) => {
+        const [elapsed, setElapsed] = useState(0);
+
+        useEffect(() => {
+            const interval = setInterval(() => {
+                setElapsed(Date.now() - startTime);
+            }, 100);
+            return () => clearInterval(interval);
+        }, [startTime]);
+
+        return <span className="font-mono text-redbull-yellow font-bold text-xl">{formatDuration(elapsed)}</span>;
+    };
 
     const handleFinish = (id: string) => {
         if (socket) {
@@ -38,9 +52,9 @@ export default function AdminFinish() {
             </div>
 
             <div className="relative z-10 max-w-7xl mx-auto">
-                <div className="flex justify-between items-center mb-8">
-                    <div>
-                        <div className="flex items-center gap-6 mb-4">
+                <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-8 md:gap-0">
+                    <div className="text-center md:text-left">
+                        <div className="flex items-center justify-center md:justify-start gap-6 mb-4">
                             <img
                                 src="/redbull.svg"
                                 alt="Red Bull"
@@ -81,14 +95,16 @@ export default function AdminFinish() {
                                     <div key={racer.id} className="bg-white/5 p-6 rounded-lg border border-white/10 flex justify-between items-center group hover:bg-white/10 transition-all border-l-4 border-l-redbull-yellow shadow-lg">
                                         <div>
                                             <div className="font-black text-2xl mb-1 italic tracking-tight">{racer.name}</div>
-                                            <div className="text-sm font-bold text-redbull-silver uppercase tracking-wider">{racer.category === 'Men' ? 'Erkek' : 'Kadın'}</div>
                                         </div>
-                                        <button
-                                            onClick={() => handleFinish(racer.id)}
-                                            className="bg-redbull-red text-white px-6 py-3 rounded font-black hover:bg-red-600 transition-all transform hover:scale-105 shadow-lg flex items-center gap-2 uppercase tracking-wider"
-                                        >
-                                            <Flag size={20} fill="currentColor" /> BİTİR
-                                        </button>
+                                        <div className="flex items-center gap-6">
+                                            {racer.startTime && <LiveTimer startTime={racer.startTime} />}
+                                            <button
+                                                onClick={() => handleFinish(racer.id)}
+                                                className="bg-redbull-red text-white px-6 py-3 rounded font-black hover:bg-red-600 transition-all transform hover:scale-105 shadow-lg flex items-center gap-2 uppercase tracking-wider"
+                                            >
+                                                <Flag size={20} fill="currentColor" /> BİTİR
+                                            </button>
+                                        </div>
                                     </div>
                                 ))
                             )}

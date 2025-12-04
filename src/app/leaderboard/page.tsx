@@ -5,18 +5,24 @@ import { useRacers } from "@/hooks/useRacers";
 import { formatDuration, cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Trophy } from "lucide-react";
+import { Trophy, Search } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 export default function Leaderboard() {
     const { racers, loading } = useRacers();
-    const [categoryFilter, setCategoryFilter] = useState("All");
 
-    const finishedRacers = racers
+
+    const [searchQuery, setSearchQuery] = useState("");
+
+    const processedRacers = racers
         .filter(r => r.status === 'finished' && r.duration !== null)
-        .filter(r => categoryFilter === "All" || r.category === categoryFilter)
-        .sort((a, b) => (a.duration || 0) - (b.duration || 0));
+        .sort((a, b) => (a.duration || 0) - (b.duration || 0))
+        .map((r, i) => ({ ...r, rank: i + 1 }));
+
+    const filteredRacers = processedRacers.filter(r =>
+        r.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
     if (loading) {
         return (
@@ -54,67 +60,61 @@ export default function Leaderboard() {
                     >
                         CANLI <span className="text-transparent bg-clip-text bg-gradient-to-r from-redbull-red to-redbull-red">SIRALAMA</span>
                     </motion.h1>
+                </div>
 
-                    <div className="flex justify-center gap-2">
-                        {["All", "Men", "Women"].map(cat => (
-                            <button
-                                key={cat}
-                                onClick={() => setCategoryFilter(cat)}
-                                className={cn(
-                                    "px-6 py-3 rounded-lg font-black text-sm uppercase tracking-wider transition-all transform skew-x-[-10deg]",
-                                    categoryFilter === cat
-                                        ? "bg-redbull-navy text-white shadow-xl scale-105"
-                                        : "bg-gray-100 text-redbull-silver hover:bg-gray-200 hover:text-redbull-navy"
-                                )}
-                            >
-                                <span className="skew-x-[10deg] inline-block">
-                                    {cat === 'All' ? 'Tümü' : cat === 'Men' ? 'Erkek' : 'Kadın'}
-                                </span>
-                            </button>
-                        ))}
+                <div className="max-w-md mx-auto md:ml-auto md:mr-0 mb-8 w-full">
+                    <div className="relative group">
+                        <input
+                            type="text"
+                            className="block w-full pl-4 pr-12 py-4 border-2 border-gray-100 rounded-xl leading-5 bg-white/80 backdrop-blur-sm placeholder-gray-400 focus:outline-none focus:border-redbull-red focus:ring-0 transition-all shadow-lg text-redbull-navy font-bold"
+                            placeholder="Yarışçı ara..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                        />
+                        <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
+                            <Search className="h-5 w-5 text-redbull-navy group-focus-within:text-redbull-red transition-colors" />
+                        </div>
                     </div>
                 </div>
 
                 <div className="bg-white/80 backdrop-blur-md rounded-2xl overflow-hidden border border-gray-200 shadow-2xl mb-8">
-                    <div className="grid grid-cols-12 gap-4 p-6 border-b border-gray-100 text-redbull-silver font-black text-xs uppercase tracking-[0.1em]">
+                    <div className="grid grid-cols-12 gap-2 md:gap-4 p-3 md:p-6 border-b border-gray-100 text-redbull-silver font-black text-[10px] md:text-xs uppercase tracking-[0.1em]">
                         <div className="col-span-2 md:col-span-1 text-center">Sıra</div>
-                        <div className="col-span-7 md:col-span-7">İsim</div>
-                        <div className="col-span-3 md:col-span-2">Kategori</div>
-                        <div className="col-span-12 md:col-span-2 text-right md:text-left mt-2 md:mt-0">Süre</div>
+                        <div className="col-span-7 md:col-span-8">İsim</div>
+                        <div className="col-span-3 md:col-span-3 text-right md:text-left mt-0">Süre</div>
                     </div>
 
                     <div className="divide-y divide-gray-100">
-                        {finishedRacers.map((racer, index) => (
+                        {filteredRacers.map((racer, index) => (
                             <motion.div
                                 key={racer.id}
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: index * 0.05 }}
                                 className={cn(
-                                    "grid grid-cols-12 gap-4 p-6 items-center hover:bg-gray-50 transition-all group relative overflow-hidden",
-                                    index === 0 ? "bg-gradient-to-r from-yellow-50 to-transparent" : ""
+                                    "grid grid-cols-12 gap-2 md:gap-4 p-3 md:p-6 items-center hover:bg-gray-50 transition-all group relative overflow-hidden",
+                                    racer.rank === 1 ? "bg-gradient-to-r from-yellow-50 to-transparent" : ""
                                 )}
                             >
                                 <div className="col-span-2 md:col-span-1 flex justify-center relative z-10">
                                     <div className={cn(
-                                        "w-10 h-10 rounded-lg flex items-center justify-center font-black text-lg transform -skew-x-12 shadow-md",
-                                        index === 0 ? "bg-redbull-yellow text-redbull-navy" :
-                                            index === 1 ? "bg-gray-300 text-redbull-navy" :
-                                                index === 2 ? "bg-[#cd7f32] text-white" : "bg-gray-100 text-redbull-silver"
+                                        "w-8 h-8 md:w-10 md:h-10 rounded-lg flex items-center justify-center font-black text-sm md:text-lg transform -skew-x-12 shadow-md",
+                                        racer.rank === 1 ? "bg-redbull-yellow text-redbull-navy" :
+                                            racer.rank === 2 ? "bg-gray-300 text-redbull-navy" :
+                                                racer.rank === 3 ? "bg-[#cd7f32] text-white" : "bg-gray-100 text-redbull-silver"
                                     )}>
-                                        {index < 3 ? <Trophy size={18} className="skew-x-12" /> : <span className="skew-x-12">{index + 1}</span>}
+                                        {racer.rank <= 3 ? <Trophy size={14} className="skew-x-12 md:w-[18px] md:h-[18px]" /> : <span className="skew-x-12">{racer.rank}</span>}
                                     </div>
                                 </div>
-                                <div className="col-span-7 md:col-span-7 font-black text-xl italic tracking-tight text-redbull-navy group-hover:text-redbull-red transition-colors relative z-10">{racer.name}</div>
-                                <div className="col-span-3 md:col-span-2 text-sm font-bold text-redbull-silver uppercase tracking-wider relative z-10">{racer.category === 'Men' ? 'Erkek' : 'Kadın'}</div>
-                                <div className="col-span-12 md:col-span-2 text-right md:text-left mt-2 md:mt-0 font-mono text-2xl font-black text-redbull-red italic tracking-tighter relative z-10">
+                                <div className="col-span-7 md:col-span-8 font-black text-sm md:text-xl italic tracking-tight text-redbull-navy group-hover:text-redbull-red transition-colors relative z-10 truncate">{racer.name}</div>
+                                <div className="col-span-3 md:col-span-3 text-right md:text-left mt-0 font-mono text-sm md:text-2xl font-black text-redbull-red italic tracking-tighter relative z-10">
                                     {formatDuration(racer.duration!)}
                                 </div>
                             </motion.div>
                         ))}
-                        {finishedRacers.length === 0 && (
+                        {filteredRacers.length === 0 && (
                             <div className="text-center py-20 text-redbull-silver/50 italic text-lg">
-                                Henüz tamamlanmış yarış yok.
+                                {searchQuery ? "Sonuç bulunamadı." : "Henüz tamamlanmış yarış yok."}
                             </div>
                         )}
                     </div>

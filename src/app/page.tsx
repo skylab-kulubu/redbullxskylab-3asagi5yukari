@@ -8,7 +8,7 @@ import { useRacers } from "@/hooks/useRacers";
 import { cn } from "@/lib/utils";
 import { formatDuration } from "@/lib/utils";
 import { useState, useEffect } from "react";
-import { ClipboardList, Zap, Timer, Medal, Trophy, CalendarPlus } from "lucide-react";
+import { ClipboardList, Zap, Timer, Medal, Trophy, CalendarPlus, Dumbbell } from "lucide-react";
 
 export default function Home() {
   const { racers, loading } = useRacers();
@@ -38,7 +38,7 @@ export default function Home() {
 
       <Header />
 
-      <main className="flex-1 flex flex-col items-center relative z-10 text-center">
+      <main className="flex-1 flex flex-col items-center relative z-10 text-center w-full overflow-x-hidden">
         {/* Hero Section */}
         <div className="min-h-[90vh] w-full px-4 relative flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-16 max-w-[95vw] mx-auto">
           {/* Left Side: Title & Info */}
@@ -49,12 +49,12 @@ export default function Home() {
             className="flex-1 flex flex-col items-center lg:items-start text-center lg:text-left z-10"
           >
             <h2 className="text-redbull-red font-black text-xl md:text-3xl mb-4 tracking-[0.2em] uppercase skew-x-[-10deg]">
-              Yıldız Teknik Üniversitesi
+              YILDIZ TEKNİK ÜNİVERSİTESİ
             </h2>
 
             <div className="relative w-full flex justify-center lg:justify-start">
-              <h1 className="text-[15vw] lg:text-[10rem] font-black italic tracking-tighter text-redbull-navy mb-8 skew-x-[-5deg] leading-[0.8] drop-shadow-sm break-words pl-4 lg:pl-0">
-                STAR<span className="text-transparent bg-clip-text bg-gradient-to-r from-redbull-red to-redbull-red pr-8 md:pr-12">RUSH</span>
+              <h1 className="text-[15vw] lg:text-[10rem] font-black italic tracking-tighter text-redbull-navy mb-8 skew-x-[-5deg] leading-[0.8] drop-shadow-sm break-words pl-0 lg:pl-0">
+                STAR<span className="text-transparent bg-clip-text bg-gradient-to-r from-redbull-red to-redbull-red pr-2 md:pr-12">RUSH</span>
               </h1>
               <div className="absolute -top-10 -right-10 w-24 h-24 bg-redbull-yellow rounded-full blur-2xl opacity-50 animate-pulse hidden lg:block"></div>
             </div>
@@ -75,10 +75,11 @@ export default function Home() {
 
           {/* Right Side: Top 5 Leaderboard Boxes */}
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
             transition={{ delay: 0.4, duration: 0.8 }}
-            className="w-full lg:w-[450px] z-10 flex flex-col items-end gap-3"
+            className="w-full lg:w-[450px] z-10 flex flex-col items-start lg:items-end gap-3"
           >
             <h3 className="text-3xl font-black italic text-redbull-navy mb-4 pr-2 skew-x-[-10deg]">
               <span className="text-redbull-red">TOP 5</span> LİDERLER
@@ -88,7 +89,7 @@ export default function Home() {
               <div
                 key={racer.id}
                 className={cn(
-                  "bg-white p-4 shadow-lg flex items-center justify-between transform skew-x-[-10deg] border-r-4 border-r-redbull-red hover:bg-redbull-navy hover:text-white group transition-all duration-300 cursor-default",
+                  "bg-white p-4 shadow-lg flex items-center justify-between transform skew-x-[-10deg] border-l-4 lg:border-l-0 lg:border-r-4 border-redbull-red hover:bg-redbull-navy hover:text-white group transition-all duration-300 cursor-default",
                   index === 0 ? "w-full" :
                     index === 1 ? "w-[92%]" :
                       "w-[84%]"
@@ -103,7 +104,7 @@ export default function Home() {
                   )}>
                     {index + 1}
                   </div>
-                  <div className="font-bold truncate max-w-[150px]">{racer.name}</div>
+                  <div className="font-bold truncate max-w-[120px] md:max-w-[150px]">{racer.name}</div>
                 </div>
                 <div className="font-mono font-black text-sm skew-x-[10deg] text-redbull-red group-hover:text-redbull-yellow">
                   {formatDuration(racer.duration!)}
@@ -117,14 +118,14 @@ export default function Home() {
               </div>
             )}
 
-            <Link href="/leaderboard" className="mt-4 mr-2 text-redbull-navy font-black uppercase tracking-wider hover:text-redbull-red transition-colors flex items-center gap-2 skew-x-[-10deg]">
+            <Link href="/leaderboard" className="mt-4 ml-2 lg:ml-0 lg:mr-2 text-redbull-navy font-black uppercase tracking-wider hover:text-redbull-red transition-colors flex items-center gap-2 skew-x-[-10deg]">
               <span className="skew-x-[10deg]">Tüm Sıralamayı Gör →</span>
             </Link>
           </motion.div>
         </div>
 
         {/* Locations Section */}
-        <div className="w-full max-w-7xl mx-auto px-4 py-20">
+        <div className="w-full max-w-7xl mx-auto px-4 py-12 md:py-20">
           <h3 className="text-4xl md:text-6xl font-black italic text-redbull-navy mb-20 skew-x-[-5deg] text-left border-l-8 border-redbull-red pl-8">
             ROTA <span className="text-redbull-silver">&</span> NOKTALAR
           </h3>
@@ -135,13 +136,13 @@ export default function Home() {
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="group relative h-[400px] rounded-2xl overflow-hidden shadow-2xl"
+              className="group relative h-[300px] md:h-[400px] rounded-2xl overflow-hidden shadow-2xl"
             >
               <div className="absolute inset-0 bg-gradient-to-t from-redbull-navy via-transparent to-transparent z-10 opacity-90"></div>
               <img src="/akapisi.jpg" alt="A Kapısı" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700" />
               <div className="absolute bottom-0 left-0 p-8 z-20 text-left">
                 <h4 className="text-3xl font-black text-white italic mb-2">A KAPISI</h4>
-                <p className="text-redbull-silver font-bold">BAŞLANGIÇ NOKTASI</p>
+                <p className="text-redbull-yellow font-bold opacity-90">Başlangıç Noktası</p>
               </div>
             </motion.div>
 
@@ -150,13 +151,13 @@ export default function Home() {
               initial={{ opacity: 0, x: 50 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="group relative h-[400px] rounded-2xl overflow-hidden shadow-2xl md:mt-20"
+              className="group relative h-[300px] md:h-[400px] rounded-2xl overflow-hidden shadow-2xl md:mt-20"
             >
               <div className="absolute inset-0 bg-gradient-to-t from-redbull-navy via-transparent to-transparent z-10 opacity-90"></div>
-              <img src="/yildizli_agac.png" alt="Yıldızlı Ağaç" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700" />
+              <img src="/race-building.png" alt="Yıldızlı Ağaç" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700" />
               <div className="absolute bottom-0 left-0 p-8 z-20 text-left">
                 <h4 className="text-3xl font-black text-white italic mb-2">YILDIZLI AĞAÇ</h4>
-                <p className="text-redbull-silver font-bold">HIZ BÖLGESİ</p>
+                <p className="text-redbull-yellow font-bold opacity-90">Bitiş Noktası</p>
               </div>
             </motion.div>
 
@@ -165,35 +166,35 @@ export default function Home() {
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="group relative h-[400px] rounded-2xl overflow-hidden shadow-2xl"
+              className="group relative h-[300px] md:h-[400px] rounded-2xl overflow-hidden shadow-2xl"
             >
               <div className="absolute inset-0 bg-gradient-to-t from-redbull-navy via-transparent to-transparent z-10 opacity-90"></div>
-              <img src="/ortabahce.png" alt="Ortabahçe" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700" />
+              <img src="/race-gate.png" alt="Ortabahçe" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700" />
               <div className="absolute bottom-0 left-0 p-8 z-20 text-left">
                 <h4 className="text-3xl font-black text-white italic mb-2">ORTABAHÇE</h4>
-                <p className="text-redbull-silver font-bold">FESTİVAL ALANI</p>
+                <p className="text-redbull-yellow font-bold opacity-90">Festival Alanı</p>
               </div>
             </motion.div>
 
-            {/* Tamer Yılmaz */}
+            {/* Kaçış Noktası */}
             <motion.div
               initial={{ opacity: 0, x: 50 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="group relative h-[400px] rounded-2xl overflow-hidden shadow-2xl md:mt-20"
+              className="group relative h-[300px] md:h-[400px] rounded-2xl overflow-hidden shadow-2xl md:mt-20"
             >
               <div className="absolute inset-0 bg-gradient-to-t from-redbull-navy via-transparent to-transparent z-10 opacity-90"></div>
-              <img src="/tamer_yilmaz.png" alt="Tamer Yılmaz" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700" />
+              <img src="/race-road.png" alt="Kaçış Noktası" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700" />
               <div className="absolute bottom-0 left-0 p-8 z-20 text-left">
-                <h4 className="text-3xl font-black text-white italic mb-2">TAMER YILMAZ</h4>
-                <p className="text-redbull-silver font-bold">REKTÖRLÜK BİTİŞİ</p>
+                <h4 className="text-3xl font-black text-white italic mb-2">KAÇIŞ NOKTASI</h4>
+                <p className="text-redbull-yellow font-bold opacity-90">Sessizce Uzamak İsteyenlere</p>
               </div>
             </motion.div>
           </div>
         </div>
 
         {/* SECTION 1: MANIFESTO */}
-        <section className="w-full py-24 bg-redbull-navy text-white relative overflow-hidden">
+        <section className="w-full py-12 md:py-24 bg-redbull-navy text-white relative overflow-hidden">
           <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
             <div className="absolute top-[-50%] left-[-20%] w-[800px] h-[800px] bg-redbull-red rounded-full blur-[150px]"></div>
             <div className="absolute bottom-[-50%] right-[-20%] w-[800px] h-[800px] bg-redbull-yellow rounded-full blur-[150px]"></div>
@@ -204,7 +205,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-5xl md:text-8xl font-black italic tracking-tighter mb-8 skew-x-[-5deg]"
+              className="text-4xl md:text-8xl font-black italic tracking-tighter mb-8 skew-x-[-5deg]"
             >
               SINIRLARI <span className="text-transparent bg-clip-text bg-gradient-to-r from-redbull-yellow to-redbull-red">ZORLA</span>
             </motion.h2>
@@ -223,7 +224,7 @@ export default function Home() {
         </section>
 
         {/* SECTION 2: MECHANICS (NASIL ÇALIŞIR?) */}
-        <section className="w-full py-24 bg-white relative">
+        <section className="w-full py-12 md:py-24 bg-white relative">
           <div className="container max-w-7xl mx-auto px-4">
             <h3 className="text-4xl md:text-6xl font-black italic text-redbull-navy mb-16 text-center skew-x-[-5deg]">
               NASIL <span className="text-redbull-red">ÇALIŞIR?</span>
@@ -253,7 +254,7 @@ export default function Home() {
         </section>
 
         {/* SECTION 3: TIMELINE (PROGRAM) */}
-        <section className="w-full py-24 bg-redbull-navy text-white relative overflow-hidden">
+        <section className="w-full py-12 md:py-24 bg-redbull-navy text-white relative overflow-hidden">
           <div className="container max-w-7xl mx-auto px-4 relative z-10">
             <h3 className="text-4xl md:text-6xl font-black italic text-white mb-20 text-center skew-x-[-5deg]">
               GÜNÜN <span className="text-redbull-yellow">PROGRAMI</span>
@@ -261,7 +262,7 @@ export default function Home() {
 
             <div className="max-w-3xl mx-auto relative">
               {/* Vertical Line */}
-              <div className="absolute left-[19px] md:left-1/2 top-0 bottom-0 w-1 bg-redbull-silver/20 transform md:-translate-x-1/2"></div>
+              <div className="absolute left-[18px] md:left-1/2 top-0 bottom-0 w-1 bg-redbull-silver/20 transform md:-translate-x-1/2"></div>
 
               {[
                 { time: "10:00", event: "Etkinlik Başlangıcı", loc: "A Kapısı" },
@@ -279,12 +280,22 @@ export default function Home() {
                     i % 2 === 0 ? "md:flex-row-reverse" : ""
                   )}
                 >
-                  <div className="w-full md:w-1/2 p-4">
+                  <div className="w-full md:w-1/2 p-4 pl-12 md:pl-4">
                     <div className={cn(
                       "bg-white/5 backdrop-blur-sm p-6 rounded-xl border border-white/10 hover:bg-white/10 transition-colors text-center md:text-left",
                       i % 2 === 0 ? "md:text-right" : ""
                     )}>
-                      <div className="text-3xl font-black text-redbull-yellow italic mb-1">{item.time}</div>
+                      <div className="text-3xl font-black text-redbull-yellow italic mb-1 flex flex-col md:block">
+                        {item.time.includes('-') ? (
+                          <>
+                            <span>{item.time.split('-')[0].trim()}</span>
+                            <span className="hidden md:inline"> - </span>
+                            <span>{item.time.split('-')[1].trim()}</span>
+                          </>
+                        ) : (
+                          item.time
+                        )}
+                      </div>
                       <div className="text-xl font-bold text-white mb-1">{item.event}</div>
                       <div className="text-sm font-mono text-redbull-silver">{item.loc}</div>
                     </div>
@@ -300,7 +311,7 @@ export default function Home() {
         </section>
 
         {/* SECTION 4: PRIZES (ÖDÜLLER) */}
-        <section className="w-full py-24 bg-gray-50 relative">
+        <section className="w-full py-12 md:py-24 bg-gray-50 relative">
           <div className="container max-w-7xl mx-auto px-4">
             <h3 className="text-4xl md:text-6xl font-black italic text-redbull-navy mb-16 text-center skew-x-[-5deg]">
               BÜYÜK <span className="text-redbull-red">ÖDÜLLER</span>
@@ -311,25 +322,34 @@ export default function Home() {
               <div className="bg-white rounded-3xl p-8 shadow-xl border-t-8 border-redbull-silver flex flex-col items-center text-center transition-colors duration-300 order-2 md:order-1 mt-0 md:mt-12 hover:border-redbull-red">
                 <div className="text-redbull-silver mb-4"><Medal size={64} /></div>
                 <h4 className="text-2xl font-black text-redbull-navy mb-2">İKİNCİLİK</h4>
-                <p className="text-redbull-silver font-bold mb-6">Red Bull Özel Paketi + Teknoloji Mağazası Hediye Çeki</p>
+                <div className="flex flex-col items-center justify-center gap-4 mb-6">
+                  <img
+                    src="/wfllogo.avif"
+                    alt="Wings for Life World Run"
+                    className="h-12 md:h-16 object-contain"
+                    style={{ filter: 'brightness(0) saturate(100%) invert(8%) sepia(10%) saturate(6871%) hue-rotate(203deg) brightness(91%) contrast(113%)' }}
+                  />
+                </div>
                 <ul className="text-sm text-left w-full space-y-2 text-gray-600">
-                  <li>• 2000 TL Hediye Çeki</li>
-                  <li>• Red Bull Hoodie</li>
-                  <li>• 1 Koli Red Bull</li>
+                  <li>• Wings for Life World Run Daveti</li>
+                  <li>• Red Bull</li>
                 </ul>
               </div>
 
               {/* 1st Place */}
-              <div className="bg-redbull-navy text-white rounded-3xl p-8 shadow-2xl border-t-8 border-redbull-yellow flex flex-col items-center text-center transition-colors duration-300 order-1 md:order-2 relative overflow-hidden hover:border-redbull-red">
+              <div className="bg-redbull-navy text-white rounded-3xl p-8 shadow-[0_20px_60px_-15px_rgba(255,204,0,0.3)] border-t-8 border-redbull-yellow flex flex-col items-center text-center transition-colors duration-300 order-1 md:order-2 relative overflow-hidden hover:border-redbull-red z-10 transform">
                 <div className="absolute top-0 right-0 w-full h-full bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
                 <div className="text-redbull-yellow mb-6 relative z-10"><Trophy size={96} /></div>
                 <h4 className="text-4xl font-black text-redbull-yellow mb-2 relative z-10">ŞAMPİYON</h4>
-                <p className="text-gray-300 font-bold mb-8 relative z-10">Red Bull Racing Deneyimi + Büyük Teknoloji Ödülü</p>
+                <div className="flex flex-row items-center justify-center gap-4 md:gap-6 mb-6 md:mb-8 relative z-10 mt-4">
+                  <Dumbbell className="w-12 h-12 md:w-16 md:h-16 text-white" />
+                  <span className="text-2xl md:text-4xl font-black text-redbull-yellow">+</span>
+                  <img src="/wfllogo.avif" alt="Wings for Life World Run" className="h-12 md:h-16 object-contain brightness-0 invert" />
+                </div>
                 <ul className="text-base text-left w-full space-y-3 text-gray-200 relative z-10">
-                  <li className="font-bold text-redbull-yellow">• Red Bull Ring Gezisi (Avusturya)</li>
-                  <li>• iPhone 16 Pro</li>
-                  <li>• Şampiyonluk Kupası</li>
-                  <li>• 1 Yıllık Red Bull Üyeliği</li>
+                  <li className="font-bold text-redbull-yellow">• Red Bull Fitness Kiti</li>
+                  <li>• Wings for Life World Run Daveti</li>
+                  <li>• Red Bull</li>
                 </ul>
               </div>
 
@@ -337,19 +357,32 @@ export default function Home() {
               <div className="bg-white rounded-3xl p-8 shadow-xl border-t-8 border-[#cd7f32] flex flex-col items-center text-center transition-colors duration-300 order-3 md:order-3 mt-0 md:mt-12 hover:border-redbull-red">
                 <div className="text-[#cd7f32] mb-4"><Medal size={64} /></div>
                 <h4 className="text-2xl font-black text-redbull-navy mb-2">ÜÇÜNCÜLÜK</h4>
-                <p className="text-redbull-silver font-bold mb-6">Red Bull Merch Paketi + Spor Mağazası Hediye Çeki</p>
+                <div className="flex flex-col items-center justify-center gap-4 mb-6">
+                  <img
+                    src="/wfllogo.avif"
+                    alt="Wings for Life World Run"
+                    className="h-16 object-contain"
+                    style={{ filter: 'brightness(0) saturate(100%) invert(8%) sepia(10%) saturate(6871%) hue-rotate(203deg) brightness(91%) contrast(113%)' }}
+                  />
+                </div>
                 <ul className="text-sm text-left w-full space-y-2 text-gray-600">
-                  <li>• 1000 TL Hediye Çeki</li>
-                  <li>• Red Bull T-Shirt</li>
-                  <li>• 1 Koli Red Bull</li>
+                  <li>• Wings for Life World Run Daveti</li>
+                  <li>• Red Bull</li>
                 </ul>
               </div>
             </div>
+
+            <div className="mt-12 text-center">
+              <p className="text-xl font-black text-redbull-navy italic skew-x-[-5deg]">
+                HER KATILIMCIYA <span className="text-redbull-red">RED BULL</span>!
+              </p>
+            </div>
+
           </div>
         </section>
 
         {/* SECTION 5: FAQ (SSS) */}
-        <section className="w-full py-24 bg-white">
+        <section className="w-full py-12 md:py-24 bg-white">
           <div className="container max-w-4xl mx-auto px-4">
             <h3 className="text-4xl md:text-6xl font-black italic text-redbull-navy mb-16 text-center skew-x-[-5deg]">
               MERAK <span className="text-redbull-silver">EDİLENLER</span>
@@ -378,10 +411,10 @@ export default function Home() {
         </section>
 
         {/* SECTION 6: CTA */}
-        <section className="w-full py-32 bg-redbull-red text-white text-center relative overflow-hidden">
+        <section className="w-full py-16 md:py-32 bg-redbull-red text-white text-center relative overflow-hidden">
           <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
           <div className="container max-w-7xl mx-auto px-4 relative z-10">
-            <h2 className="text-5xl md:text-7xl font-black italic tracking-tighter mb-8 skew-x-[-5deg]">
+            <h2 className="text-4xl md:text-7xl font-black italic tracking-tighter mb-8 skew-x-[-5deg]">
               EFSANE OLMAYA <br /> <span className="text-redbull-navy">HAZIR MISIN?</span>
             </h2>
             <p className="text-2xl font-bold max-w-2xl mx-auto">
@@ -399,6 +432,6 @@ export default function Home() {
       </main>
 
       <Footer />
-    </div>
+    </div >
   );
 }
