@@ -26,7 +26,8 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const socketInstance = io("http://localhost:3001");
+        const socketUrl = process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:3001";
+        const socketInstance = io(socketUrl);
         setSocket(socketInstance);
 
         socketInstance.on("connect", () => {
