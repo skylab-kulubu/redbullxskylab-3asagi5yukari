@@ -53,9 +53,13 @@ export default function Home() {
             </h2>
 
             <div className="relative w-full flex justify-center lg:justify-start">
-              <h1 className="text-[15vw] lg:text-[10rem] font-black italic tracking-tighter text-redbull-navy mb-8 skew-x-[-5deg] leading-[0.8] drop-shadow-sm break-words pl-0 lg:pl-0">
-                STAR<span className="text-transparent bg-clip-text bg-gradient-to-r from-redbull-red to-redbull-red pr-2 md:pr-12">RUSH</span>
-              </h1>
+              <div className="mb-8 pl-0 lg:pl-0">
+                <img
+                  src="/3asagi5yukari.png"
+                  alt="Star Rush"
+                  className="w-[80vw] lg:w-[600px] h-auto object-contain drop-shadow-sm"
+                />
+              </div>
               <div className="absolute -top-10 -right-10 w-24 h-24 bg-redbull-yellow rounded-full blur-2xl opacity-50 animate-pulse hidden lg:block"></div>
             </div>
 
@@ -156,7 +160,7 @@ export default function Home() {
               <div className="absolute inset-0 bg-gradient-to-t from-redbull-navy via-transparent to-transparent z-10 opacity-90"></div>
               <img src="/race-building.png" alt="Yıldızlı Ağaç" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700" />
               <div className="absolute bottom-0 left-0 p-8 z-20 text-left">
-                <h4 className="text-3xl font-black text-white italic mb-2">YILDIZLI AĞAÇ</h4>
+                <h4 className="text-3xl font-black text-white italic mb-2">KONGRE MERKEZİ</h4>
                 <p className="text-redbull-yellow font-bold opacity-90">Bitiş Noktası</p>
               </div>
             </motion.div>
@@ -172,7 +176,7 @@ export default function Home() {
               <img src="/race-gate.png" alt="Ortabahçe" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700" />
               <div className="absolute bottom-0 left-0 p-8 z-20 text-left">
                 <h4 className="text-3xl font-black text-white italic mb-2">ORTABAHÇE</h4>
-                <p className="text-redbull-yellow font-bold opacity-90">Festival Alanı</p>
+                <p className="text-redbull-yellow font-bold opacity-90">Hızını alamayanlara</p>
               </div>
             </motion.div>
 
@@ -220,93 +224,6 @@ export default function Home() {
               Stratejini kur, rotanı belirle ve <span className="text-redbull-red">en hızlı</span> sen ol.
               Sadece bacaklarına değil, zekana da güvenmelisin.
             </motion.p>
-          </div>
-        </section>
-
-        {/* SECTION 2: MECHANICS (NASIL ÇALIŞIR?) */}
-        <section className="w-full py-12 md:py-24 bg-white relative">
-          <div className="container max-w-7xl mx-auto px-4">
-            <h3 className="text-4xl md:text-6xl font-black italic text-redbull-navy mb-16 text-center skew-x-[-5deg]">
-              NASIL <span className="text-redbull-red">ÇALIŞIR?</span>
-            </h3>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {[
-                { title: "KAYIT OL", desc: "A Kapısı'ndaki standımıza gel, kaydını yaptır ve başlangıç kitini al.", icon: <ClipboardList size={48} /> },
-                { title: "ISIN & HAZIRLAN", desc: "Vücudunu yarışa hazırla, parkuru tanı ve stratejini belirle.", icon: <Zap size={48} /> },
-                { title: "400 METRE DEPARI", desc: "Start verildiği an tüm gücünle koş! En iyi süreni yap ve liderliğe otur.", icon: <Timer size={48} /> }
-              ].map((item, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.2 }}
-                  className="bg-gray-50 p-8 rounded-2xl border-b-4 border-redbull-navy hover:border-redbull-red transition-colors group"
-                >
-                  <div className="text-redbull-navy mb-6 group-hover:text-redbull-red transition-colors duration-300 flex justify-center">{item.icon}</div>
-                  <h4 className="text-2xl font-black italic text-redbull-navy mb-4 skew-x-[-5deg]">{item.title}</h4>
-                  <p className="text-redbull-silver font-bold text-lg">{item.desc}</p>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* SECTION 3: TIMELINE (PROGRAM) */}
-        <section className="w-full py-12 md:py-24 bg-redbull-navy text-white relative overflow-hidden">
-          <div className="container max-w-7xl mx-auto px-4 relative z-10">
-            <h3 className="text-4xl md:text-6xl font-black italic text-white mb-20 text-center skew-x-[-5deg]">
-              GÜNÜN <span className="text-redbull-yellow">PROGRAMI</span>
-            </h3>
-
-            <div className="max-w-3xl mx-auto relative">
-              {/* Vertical Line */}
-              <div className="absolute left-[18px] md:left-1/2 top-0 bottom-0 w-1 bg-redbull-silver/20 transform md:-translate-x-1/2"></div>
-
-              {[
-                { time: "10:00", event: "Etkinlik Başlangıcı", loc: "A Kapısı" },
-                { time: "10:00 - 18:00", event: "Yarış Heyecanı", loc: "Tüm Kampüs" },
-                { time: "19:00", event: "Ödül Töreni", loc: "Ortabahçe" },
-                { time: "20:00", event: "After Party", loc: "Ortabahçe" }
-              ].map((item, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, x: i % 2 === 0 ? -50 : 50 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  className={cn(
-                    "flex flex-col md:flex-row items-center mb-12 relative",
-                    i % 2 === 0 ? "md:flex-row-reverse" : ""
-                  )}
-                >
-                  <div className="w-full md:w-1/2 p-4 pl-12 md:pl-4">
-                    <div className={cn(
-                      "bg-white/5 backdrop-blur-sm p-6 rounded-xl border border-white/10 hover:bg-white/10 transition-colors text-center md:text-left",
-                      i % 2 === 0 ? "md:text-right" : ""
-                    )}>
-                      <div className="text-3xl font-black text-redbull-yellow italic mb-1 flex flex-col md:block">
-                        {item.time.includes('-') ? (
-                          <>
-                            <span>{item.time.split('-')[0].trim()}</span>
-                            <span className="hidden md:inline"> - </span>
-                            <span>{item.time.split('-')[1].trim()}</span>
-                          </>
-                        ) : (
-                          item.time
-                        )}
-                      </div>
-                      <div className="text-xl font-bold text-white mb-1">{item.event}</div>
-                      <div className="text-sm font-mono text-redbull-silver">{item.loc}</div>
-                    </div>
-                  </div>
-
-                  <div className="absolute left-[10px] md:left-1/2 w-5 h-5 bg-redbull-red rounded-full border-4 border-redbull-navy transform md:-translate-x-1/2 z-10"></div>
-
-                  <div className="w-full md:w-1/2 p-4 hidden md:block"></div>
-                </motion.div>
-              ))}
-            </div>
           </div>
         </section>
 
@@ -378,6 +295,99 @@ export default function Home() {
               </p>
             </div>
 
+          </div>
+        </section>
+        {/* SECTION 3: TIMELINE (PROGRAM) */}
+        {/*
+        <section className="w-full py-12 md:py-24 bg-redbull-navy text-white relative overflow-hidden">
+          <div className="container max-w-7xl mx-auto px-4 relative z-10">
+            <h3 className="text-4xl md:text-6xl font-black italic text-white mb-20 text-center skew-x-[-5deg]">
+              GÜNÜN <span className="text-redbull-yellow">PROGRAMI</span>
+            </h3>
+
+            <div className="max-w-3xl mx-auto relative">
+              {/* Vertical Line */ /*}
+              <div className="absolute left-[18px] md:left-1/2 top-0 bottom-0 w-1 bg-redbull-silver/20 transform md:-translate-x-1/2"></div>
+
+              {[
+                { time: "10:00", event: "Etkinlik Başlangıcı", loc: "A Kapısı" },
+                { time: "10:00 - 18:00", event: "Yarış Heyecanı", loc: "Tüm Kampüs" },
+                { time: "19:00", event: "Ödül Töreni", loc: "Ortabahçe" },
+                { time: "20:00", event: "After Party", loc: "Ortabahçe" }
+              ].map((item, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: i % 2 === 0 ? -50 : 50 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  className={cn(
+                    "flex flex-col md:flex-row items-center mb-12 relative",
+                    i % 2 === 0 ? "md:flex-row-reverse" : ""
+                  )}
+                >
+                  <div className="w-full md:w-1/2 p-4 pl-12 md:pl-4">
+                    <div className={cn(
+                      "bg-white/5 backdrop-blur-sm p-6 rounded-xl border border-white/10 hover:bg-white/10 transition-colors text-center md:text-left",
+                      i % 2 === 0 ? "md:text-right" : ""
+                    )}>
+                      <div className="text-3xl font-black text-redbull-yellow italic mb-1 flex flex-col md:block">
+                        {item.time.includes('-') ? (
+                          <>
+                            <span>{item.time.split('-')[0].trim()}</span>
+                            <span className="hidden md:inline"> - </span>
+                            <span>{item.time.split('-')[1].trim()}</span>
+                          </>
+                        ) : (
+                          item.time
+                        )}
+                      </div>
+                      <div className="text-xl font-bold text-white mb-1">{item.event}</div>
+                      <div className="text-sm font-mono text-redbull-silver">{item.loc}</div>
+                    </div>
+                  </div>
+
+                  <div className="absolute left-[10px] md:left-1/2 w-5 h-5 bg-redbull-red rounded-full border-4 border-redbull-navy transform md:-translate-x-1/2 z-10"></div>
+
+                  <div className="w-full md:w-1/2 p-4 hidden md:block"></div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+        */}
+
+        {/* SECTION 2: MECHANICS (NASIL ÇALIŞIR?) */}
+        <section className="w-full py-12 md:py-24 bg-redbull-navy text-white relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
+            <div className="absolute top-[-50%] left-[-20%] w-[800px] h-[800px] bg-redbull-red rounded-full blur-[150px]"></div>
+            <div className="absolute bottom-[-50%] right-[-20%] w-[800px] h-[800px] bg-redbull-yellow rounded-full blur-[150px]"></div>
+          </div>
+
+          <div className="container max-w-7xl mx-auto px-4 relative z-10">
+            <h3 className="text-4xl md:text-6xl font-black italic text-white mb-16 text-center skew-x-[-5deg]">
+              NASIL <span className="text-redbull-red">ÇALIŞIR?</span>
+            </h3>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {[
+                { title: "KAYIT OL", desc: "A Kapısı'ndaki standımıza gel, kaydını yaptır.", icon: <ClipboardList size={48} /> },
+                { title: "ISIN & HAZIRLAN", desc: "Vücudunu yarışa hazırla, parkuru tanı ve stratejini belirle.", icon: <Zap size={48} /> },
+                { title: "400 METRE DEPARI", desc: "Start verildiği an tüm gücünle koş! En iyi süreni yap ve liderliğe otur.", icon: <Timer size={48} /> }
+              ].map((item, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.2 }}
+                  className="bg-gray-50 p-8 rounded-2xl border-b-4 border-redbull-navy hover:border-redbull-red transition-colors group"
+                >
+                  <div className="text-redbull-navy mb-6 group-hover:text-redbull-red transition-colors duration-300 flex justify-center">{item.icon}</div>
+                  <h4 className="text-2xl font-black italic text-redbull-navy mb-4 skew-x-[-5deg]">{item.title}</h4>
+                  <p className="text-redbull-silver font-bold text-lg">{item.desc}</p>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </section>
 

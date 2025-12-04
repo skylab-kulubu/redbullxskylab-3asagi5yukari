@@ -1,36 +1,70 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 3 Aşağı 5 Yukarı
 
-## Getting Started
+Bu proje, Next.js ve Socket.io kullanılarak geliştirilmiş gerçek zamanlı bir yarış ve liderlik tablosu uygulamasıdır.
 
-First, run the development server:
+## 🛠 Teknolojiler
+
+- **Frontend:** Next.js 15, React 19, Tailwind CSS, Framer Motion
+- **Backend:** Node.js, Express, Socket.io
+- **Veritabanı & Önbellek:** PostgreSQL, Redis
+- **Konteynerizasyon:** Docker & Docker Compose
+
+## 🚀 Kurulum ve Çalıştırma
+
+Projeyi çalıştırmak için iki yöntem bulunmaktadır: Docker ile (önerilen) veya manuel geliştirme ortamı kurulumu.
+
+### Seçenek 1: Docker ile Çalıştırma (Önerilen)
+
+Tüm sistemi (Frontend, Backend, Redis, Postgres) tek bir komutla ayağa kaldırabilirsiniz.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+docker-compose up --build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Bu işlem tamamlandığında:
+- **Frontend:** [http://localhost:3000](http://localhost:3000)
+- **Backend API:** [http://localhost:3001](http://localhost:3001)
+adreslerinden erişilebilir olacaktır.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Seçenek 2: Manuel Geliştirme Ortamı
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Geliştirme yaparken frontend ve backend'i ayrı ayrı çalıştırmak isteyebilirsiniz. Ancak Redis ve PostgreSQL'e ihtiyacınız olacaktır.
 
-## Learn More
+1. **Altyapı Servislerini Başlatın**
+   Sadece veritabanı ve cache servislerini Docker ile başlatın:
+   ```bash
+   docker-compose up redis postgres -d
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+2. **Backend (Sunucu) Kurulumu**
+   Yeni bir terminal açın ve server dizinine gidin:
+   ```bash
+   cd server
+   npm install
+   npm run dev
+   ```
+   Backend 3001 portunda çalışacaktır.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. **Frontend Kurulumu**
+   Ana dizinde (root) paketleri yükleyin ve projeyi başlatın:
+   ```bash
+   npm install
+   npm run dev
+   # veya
+   pnpm dev
+   ```
+   Frontend 3000 portunda çalışacaktır.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📂 Proje Yapısı
 
-## Deploy on Vercel
+- `/src`: Next.js frontend kaynak kodları
+- `/server`: Node.js/Express backend ve Socket.io sunucusu
+- `docker-compose.yml`: Tüm servislerin orkestrasyonu
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🔑 Önemli Ortam Değişkenleri
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+`docker-compose.yml` veya `.env` dosyasında yapılandırılan temel değişkenler:
+
+- `NEXT_PUBLIC_SOCKET_URL`: Frontend'in bağlandığı Socket.io sunucu adresi (Varsayılan: `http://localhost:3001`)
+- `REDIS_HOST` / `REDIS_PORT`: Redis bağlantı bilgileri
+- `PG_USER` / `PG_PASSWORD` / `PG_DATABASE`: PostgreSQL veritabanı bilgileri
