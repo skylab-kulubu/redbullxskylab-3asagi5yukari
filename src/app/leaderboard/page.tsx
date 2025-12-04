@@ -11,7 +11,16 @@ import Footer from "@/components/Footer";
 
 export default function Leaderboard() {
     const { racers, loading } = useRacers();
+    const [showLoading, setShowLoading] = useState(true);
 
+    // Minimum 2 saniye loading göster
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setShowLoading(false);
+        }, 2000);
+
+        return () => clearTimeout(timer);
+    }, []);
 
     const [searchQuery, setSearchQuery] = useState("");
 
@@ -24,7 +33,7 @@ export default function Leaderboard() {
         r.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
-    if (loading) {
+    if (loading || showLoading) {
         return (
             <div className="min-h-screen bg-white flex items-center justify-center">
                 <img src="/loading.gif" alt="Loading..." className="w-48 h-48 object-contain" />

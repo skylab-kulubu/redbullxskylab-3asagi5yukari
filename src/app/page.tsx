@@ -12,6 +12,16 @@ import { ClipboardList, Zap, Timer, Medal, Trophy, CalendarPlus, Dumbbell } from
 
 export default function Home() {
   const { racers, loading } = useRacers();
+  const [showLoading, setShowLoading] = useState(true);
+
+  // Minimum 2 saniye loading göster
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowLoading(false);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   // Get top 10 finished racers
   const topRacers = racers
@@ -19,7 +29,7 @@ export default function Home() {
     .sort((a, b) => (a.duration || 0) - (b.duration || 0))
     .slice(0, 10);
 
-  if (loading) {
+  if (loading || showLoading) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
         <img src="/loading.gif" alt="Loading..." className="w-48 h-48 object-contain" />
