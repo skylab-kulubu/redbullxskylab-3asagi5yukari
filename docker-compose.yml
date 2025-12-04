@@ -1,0 +1,70 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - redbull-net
+
+  postgres:
+    image: postgres:15-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=redbull
+      - POSTGRES_PASSWORD=redbull
+      - POSTGRES_DB=starrush
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - redbull-net
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - PORT=3001
+      - PG_USER=redbull
+      - PG_HOST=postgres
+      - PG_DATABASE=starrush
+      - PG_PASSWORD=redbull
+      - PG_PORT=5432
+    depends_on:
+      - redis
+      - postgres
+    networks:
+      - redbull-net
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_SOCKET_URL=http://localhost:3001
+      - ADMIN_START_PASSWORD=start123
+      - ADMIN_FINISH_PASSWORD=finish123
+      - ADMIN_ERSEL_PASSWORD=ersel123
+      - AUTH_SECRET=super-secret-auth-key-change-me
+    depends_on:
+      - server
+    networks:
+      - redbull-net
+
+networks:
+  redbull-net:
+    driver: bridge
+
+volumes:
+  redis_data:
+  postgres_data:
