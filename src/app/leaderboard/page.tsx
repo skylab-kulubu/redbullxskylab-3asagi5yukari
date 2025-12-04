@@ -10,16 +10,8 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 export default function Leaderboard() {
-    const racers = useRacers();
+    const { racers, loading } = useRacers();
     const [categoryFilter, setCategoryFilter] = useState("All");
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setLoading(false);
-        }, 1000);
-        return () => clearTimeout(timer);
-    }, []);
 
     const finishedRacers = racers
         .filter(r => r.status === 'finished' && r.duration !== null)

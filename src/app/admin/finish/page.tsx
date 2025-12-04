@@ -7,8 +7,8 @@ import { Flag, Clock, Timer, CheckCircle, LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 export default function AdminFinish() {
-    const socket = useSocket();
-    const racers = useRacers();
+    const { socket } = useSocket();
+    const { racers } = useRacers();
     const router = useRouter();
 
     const handleFinish = (id: string) => {

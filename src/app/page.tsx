@@ -11,15 +11,7 @@ import { useState, useEffect } from "react";
 import { ClipboardList, Zap, Timer, Medal, Trophy, CalendarPlus } from "lucide-react";
 
 export default function Home() {
-  const racers = useRacers();
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, []);
+  const { racers, loading } = useRacers();
 
   // Get top 10 finished racers
   const topRacers = racers

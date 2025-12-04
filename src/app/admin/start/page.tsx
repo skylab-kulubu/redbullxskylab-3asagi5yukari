@@ -8,8 +8,8 @@ import { Play, RotateCcw, Edit2, Check, X, UserPlus, List, Timer, LogOut } from 
 import { useRouter } from "next/navigation";
 
 export default function AdminStart() {
-    const socket = useSocket();
-    const racers = useRacers();
+    const { socket } = useSocket();
+    const { racers } = useRacers();
     const router = useRouter();
 
     const [formData, setFormData] = useState({ name: "", email: "", phone: "", category: "Men" });

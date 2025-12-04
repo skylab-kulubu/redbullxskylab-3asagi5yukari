@@ -6,8 +6,8 @@ import { Trash2, LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 export default function SuperAdminDashboard() {
-    const racers = useRacers();
-    const socket = useSocket();
+    const { racers } = useRacers();
+    const { socket } = useSocket();
     const router = useRouter();
 
     const handleDelete = (id: string, name: string) => {
