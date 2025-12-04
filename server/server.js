@@ -14,16 +14,14 @@ app.use(express.json());
 const server = http.createServer(app);
 
 // Redis Setup
-const redisHost = process.env.REDIS_HOST || 'localhost';
-const redisPort = process.env.REDIS_PORT || 6379;
+const redisUrl = process.env.REDIS_URL || 'redis://localhost:6379';
 
 // Postgres Setup
+const connectionString = process.env.DATABASE_URL || process.env.POSTGRES_URL || 'postgresql://redbull:redbull@localhost:5432/starrush';
+
 const pgPool = new Pool({
-  user: process.env.PG_USER || 'redbull',
-  host: process.env.PG_HOST || 'localhost',
-  database: process.env.PG_DATABASE || 'starrush',
-  password: process.env.PG_PASSWORD || 'redbull',
-  port: process.env.PG_PORT || 5432,
+  connectionString,
+  ssl: connectionString.includes('localhost') ? false : { rejectUnauthorized: false }
 });
 
 async function initServer() {
@@ -31,11 +29,11 @@ async function initServer() {
 
   // Try to connect to Redis
   try {
-    const pubClient = createClient({ url: `redis://${redisHost}:${redisPort}` });
+    const pubClient = createClient({ url: redisUrl });
     const subClient = pubClient.duplicate();
 
     await Promise.all([pubClient.connect(), subClient.connect()]);
-    console.log(`Connected to Redis at ${redisHost}:${redisPort}`);
+    console.log(`Connected to Redis at ${redisUrl.split('@')[1] || 'localhost'}`);
 
     io = new Server(server, {
       cors: {
